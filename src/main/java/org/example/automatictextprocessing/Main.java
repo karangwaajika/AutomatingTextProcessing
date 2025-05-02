@@ -37,6 +37,13 @@ public class Main {
             logger.log(Level.ERROR, e.getMessage());
         }
 
+        // Delete woman
+        try {
+            db.removeWoman(6);
+        } catch (WomanNotFoundException e) {
+            logger.log(Level.ERROR, e.getMessage());
+        }
+
         // ################### View Women ##########################
         System.out.println("###### Women list ########");
         db.getAllWomen().forEach((woman) -> {

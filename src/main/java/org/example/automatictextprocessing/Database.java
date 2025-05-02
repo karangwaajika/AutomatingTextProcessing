@@ -50,4 +50,14 @@ public class Database {
         return new ArrayList<>(women.values());
     }
 
+    public int removeWoman(Integer womanId) {
+        if (!(women.containsKey(womanId))) {
+            throw new WomanNotFoundException("Woman ID provided doesn't exist: "
+                    + womanId);
+        }
+        women.remove(womanId);
+        return womanId;
+
+    }
+
 }
