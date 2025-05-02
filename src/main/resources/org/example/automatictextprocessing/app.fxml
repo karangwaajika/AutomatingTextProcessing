@@ -17,13 +17,68 @@
           AnchorPane.rightAnchor="20"
     >
         <VBox alignment="TOP_CENTER">
-            <Label text="Rwanda Citizen Processing Data"
+            <Label text="Rwanda Citizen Analysis Center"
                    style="-fx-font-size: 20px; -fx-font-weight: bold;"
             />
-            <Label text="This is the form to help us gather some of the information from you"
+            <Label text="We're gathering data about Women in Rwanda in order to support them financially"
                    style="-fx-font-size: 12px; -fx-font-weight: normal;"
             />
         </VBox>
+        <HBox spacing="10">
+            <VBox alignment="TOP_CENTER">
+                <Label text="Add data using form"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold;"
+                />
+                <Label text="This is the form to help us gather some of the information from you"
+                       style="-fx-font-size: 12px; -fx-font-weight: normal;"
+                />
+                <VBox spacing="10">
+                    <TextField fx:id="nameField" promptText="Name"/>
+                    <TextField fx:id="ageField" promptText="Age"/>
+                    <HBox spacing="10">
+                        <ComboBox fx:id="maritalStatusComboBox" promptText="Select Marital status">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Single"/>
+                                    <String fx:value="Married"/>
+                                    <String fx:value="Divorced"/>
+                                    <String fx:value="Widowed"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <CheckBox fx:id="isEmployedCheckBox" text="Is Employed"/>
+                    </HBox>
+                    <DatePicker fx:id="marriageDateField"
+                               promptText="Enter date of marriage (YYYY-MM-DD)"
+                               visible="false"/>
+
+
+                    <Button text="Submit"/>
+                </VBox>
+            </VBox>
+            <Separator orientation="VERTICAL" prefWidth="1"/>
+            <VBox alignment="TOP_CENTER">
+                <Label text="Add data using input text or file"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold;"
+                />
+                <Label text="This is the form to help us gather some of the information from you"
+                       style="-fx-font-size: 12px; -fx-font-weight: normal;"
+                />
+            </VBox>
+            <Separator orientation="VERTICAL" prefWidth="1"/>
+
+            <VBox alignment="TOP_CENTER" prefWidth="500" style="-fx-background-color: #ADD8E6;">
+
+                <Label text="The processed data using Regx"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold;"
+                />
+                <Label text="This is the form to help us gather some of the information from you"
+                       style="-fx-font-size: 12px; -fx-font-weight: normal;"
+                />
+            </VBox>
+        </HBox>
+
 
     </VBox>
 </AnchorPane>
