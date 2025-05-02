@@ -26,7 +26,7 @@ public class Woman {
         this.name = name;
     }
 
-    public int getCitizenId() {
+    public int getWomanId() {
         return womanId;
     }
 
