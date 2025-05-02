@@ -6,6 +6,8 @@ import org.example.automatictextprocessing.exceptions.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
 
@@ -17,7 +19,7 @@ public class Main {
                 true, false);
         Woman w2 = new Single(Woman.womanNbr, "Jossee", 27, "Single",
                 true, true);
-        Woman w3 = new Married(Woman.womanNbr, "Solange", 12, "Married",
+        Woman w3 = new Married(Woman.womanNbr, "Solange", 42, "Married",
                 false, "2018-04-12");
         Woman w4 = new Widowed(Woman.womanNbr, "Deborah", 65, "Widowed",
                 false, "2024-07-12");
@@ -41,6 +43,20 @@ public class Main {
         try {
             db.removeWoman(6);
         } catch (WomanNotFoundException e) {
+            logger.log(Level.ERROR, e.getMessage());
+        }
+
+        // Filter by department
+        try {
+            List<Woman> womenList = db.filterByMaritalStatus("Singles");
+            System.out.println("##### Filtered ######");
+            womenList.forEach((woman) -> {
+                System.out.printf("%d| name:%s, age: %d, marital_status: %s, Employed: %b\n",
+                        woman.getWomanId(), woman.getName(), woman.getAge(), woman.getMaritalStatus(),
+                        woman.isEmployed());
+            });
+
+        } catch (InvalidMaritalStatusException e) {
             logger.log(Level.ERROR, e.getMessage());
         }
 

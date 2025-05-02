@@ -4,6 +4,7 @@ import org.example.automatictextprocessing.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Database {
     static final HashMap<Integer, Woman> women = new HashMap<>();
@@ -58,6 +59,17 @@ public class Database {
         women.remove(womanId);
         return womanId;
 
+    }
+
+    public List<Woman> filterByMaritalStatus(String field) {
+        List<Woman> womenList = women.values().stream()
+                .filter(w -> w.getMaritalStatus().equals(field)).toList();
+        if (womenList.isEmpty()) {
+            throw new InvalidMaritalStatusException("No Marital status with the name '"
+                    + field + "'");
+        }
+
+        return womenList;
     }
 
 }
