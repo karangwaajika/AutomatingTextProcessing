@@ -9,6 +9,7 @@ module org.example.automatictextprocessing {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires org.apache.logging.log4j;
 
     opens org.example.automatictextprocessing to javafx.fxml;
     exports org.example.automatictextprocessing;
