@@ -46,7 +46,7 @@ public class Woman {
         this.maritalStatus = maritalStatus;
     }
 
-    public boolean isEmployed() {
+    public boolean getIsEmployed() {
         return isEmployed;
     }
 

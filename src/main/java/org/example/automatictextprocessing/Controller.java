@@ -1,9 +1,11 @@
 package org.example.automatictextprocessing;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
 import java.time.LocalDate;
@@ -34,6 +36,26 @@ public class Controller {
     @FXML
     private CheckBox isEmployedCheckBox;
 
+    // table fields
+    @FXML
+    private TableView<Woman> womanTable;
+    @FXML
+    private TableColumn<Woman, String> nameColumn;
+    @FXML
+    private TableColumn<Woman, Integer> ageColumn;
+    @FXML
+    private TableColumn<Woman, Boolean> employedColumn;
+    @FXML
+    private TableColumn<Woman, String> maritalStatusColumn;
+    @FXML
+    private TableColumn<Single, String> relationshipColumn;
+    @FXML
+    private TableColumn<Woman, String> marriageDateColumn;
+    @FXML
+    private TableColumn<Woman, String> divorcedDateColumn;
+    @FXML
+    private TableColumn<Woman, String> spouseDeathDateColumn;
+
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     // db initialization
@@ -48,9 +70,9 @@ public class Controller {
             String maritalStatus = maritalStatusComboBox.getValue();
             int age = Integer.parseInt(ageField.getText());
             boolean isEmployed = isEmployedCheckBox.isSelected();
-            String dateDivorced = divorcedDateField.toString();
-            String dateMarried = marriageDateField.toString();
-            String spouseDeathDate = spouseDateField.toString();
+            String dateDivorced = divorcedDateField.getValue() != null ? divorcedDateField.getValue().toString() : "-";
+            String dateMarried = marriageDateField.getValue() != null ? marriageDateField.getValue().toString() : "-";
+            String spouseDeathDate = spouseDateField.getValue() != null ? spouseDateField.getValue().toString() : "-";
             boolean isInRelationship = isInRelationshipCheckBox.isSelected();
 
 
@@ -58,7 +80,6 @@ public class Controller {
             Woman woman = createWoman(maritalStatus, name, age, isEmployed, isInRelationship,
                     dateMarried, dateDivorced, spouseDeathDate);
             db.addWoman(woman.getWomanId(), woman);
-
             womenList.setAll(db.getAllWomen()); // make table auto-refresh
 
             showAlert(Alert.AlertType.CONFIRMATION, "Success",
@@ -94,6 +115,46 @@ public class Controller {
 
     @FXML
     public void initialize() {
+        // initialize field on table
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
+        employedColumn.setCellValueFactory(new PropertyValueFactory<>("isEmployed"));
+        maritalStatusColumn.setCellValueFactory(new PropertyValueFactory<>("maritalStatus"));
+        relationshipColumn.setCellValueFactory(cellData -> {
+            Woman w = cellData.getValue();
+            if (w instanceof Single single) {
+                return new SimpleStringProperty(Boolean.toString(single.getRelationship()));
+            } else {
+                return new SimpleStringProperty("-"); // blank for non-single
+            }
+        });
+        marriageDateColumn.setCellValueFactory(cellData -> {
+            Woman w = cellData.getValue();
+            if (w instanceof Married married) {
+                return new SimpleStringProperty(married.getDateMarried());
+            } else {
+                return new SimpleStringProperty("-"); // blank for non-marriage
+            }
+        });
+        divorcedDateColumn.setCellValueFactory(cellData -> {
+            Woman w = cellData.getValue();
+            if (w instanceof Divorced divorced) {
+                return new SimpleStringProperty(divorced.getDateDivorced());
+            } else {
+                return new SimpleStringProperty("-"); // blank for non-divorced
+            }
+        });
+        spouseDeathDateColumn.setCellValueFactory(cellData -> {
+            Woman w = cellData.getValue();
+            if (w instanceof Widowed widowed) {
+                return new SimpleStringProperty(widowed.getSpouseDeathDate());
+            } else {
+                return new SimpleStringProperty("-"); // blank for non-widowed
+            }
+        });
+
+        womanTable.setItems(womenList); // refresh table for new record
+
         // handle field visibility
         maritalStatusComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
             marriageDateField.setVisible("Married".equals(newVal));
