@@ -53,7 +53,7 @@ public class Main {
             womenList.forEach((woman) -> {
                 System.out.printf("%d| name:%s, age: %d, marital_status: %s, Employed: %b\n",
                         woman.getWomanId(), woman.getName(), woman.getAge(), woman.getMaritalStatus(),
-                        woman.isEmployed());
+                        woman.getIsEmployed());
             });
 
         } catch (InvalidMaritalStatusException e) {
@@ -65,7 +65,7 @@ public class Main {
         db.getAllWomen().forEach((woman) -> {
             System.out.printf("%d| name:%s, age: %d, marital_status: %s, Employed: %b\n",
                     woman.getWomanId(), woman.getName(), woman.getAge(), woman.getMaritalStatus(),
-                    woman.isEmployed());
+                    woman.getIsEmployed());
         });
     }
 }

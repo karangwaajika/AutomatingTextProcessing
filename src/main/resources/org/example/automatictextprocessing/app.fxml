@@ -87,6 +87,22 @@
                 />
             </VBox>
         </HBox>
+        <Separator prefWidth="1"/>
+        <HBox>
+            <!-- TableView -->
+            <TableView fx:id="womanTable" >
+                <columns>
+                    <TableColumn fx:id="nameColumn" text="Name"/>
+                    <TableColumn fx:id="ageColumn" text="Age"/>
+                    <TableColumn fx:id="employedColumn" text="Employed"/>
+                    <TableColumn fx:id="maritalStatusColumn" text="Marital status"/>
+                    <TableColumn fx:id="relationshipColumn" text="InRelationship"/>
+                    <TableColumn fx:id="marriageDateColumn" text="Marriage Date"/>
+                    <TableColumn fx:id="divorcedDateColumn" text="Divorced Date"/>
+                    <TableColumn fx:id="spouseDeathDateColumn" text="Spouse Death Date"/>
+                </columns>
+            </TableView>
+        </HBox>
 
 
     </VBox>
