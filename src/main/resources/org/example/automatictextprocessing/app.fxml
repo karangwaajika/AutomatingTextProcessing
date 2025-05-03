@@ -90,16 +90,16 @@
         <Separator prefWidth="1"/>
         <HBox>
             <!-- TableView -->
-            <TableView fx:id="womanTable" >
+            <TableView fx:id="womanTable" prefHeight="200" prefWidth="735">
                 <columns>
-                    <TableColumn fx:id="nameColumn" text="Name"/>
+                    <TableColumn fx:id="nameColumn" text="Name" prefWidth="100.0" style="-fx-text-align: center"/>
                     <TableColumn fx:id="ageColumn" text="Age"/>
                     <TableColumn fx:id="employedColumn" text="Employed"/>
-                    <TableColumn fx:id="maritalStatusColumn" text="Marital status"/>
-                    <TableColumn fx:id="relationshipColumn" text="InRelationship"/>
-                    <TableColumn fx:id="marriageDateColumn" text="Marriage Date"/>
-                    <TableColumn fx:id="divorcedDateColumn" text="Divorced Date"/>
-                    <TableColumn fx:id="spouseDeathDateColumn" text="Spouse Death Date"/>
+                    <TableColumn fx:id="maritalStatusColumn" text="Marital status" prefWidth="90.0"/>
+                    <TableColumn fx:id="relationshipColumn" text="InRelationship" prefWidth="90.0"/>
+                    <TableColumn fx:id="marriageDateColumn" text="Marriage Date" prefWidth="90.0"/>
+                    <TableColumn fx:id="divorcedDateColumn" text="Divorced Date" prefWidth="90.0"/>
+                    <TableColumn fx:id="spouseDeathDateColumn" text="Spouse Death_D." prefWidth="120.0"/>
                 </columns>
             </TableView>
         </HBox>
