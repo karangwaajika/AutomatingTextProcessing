@@ -1,9 +1,22 @@
 package org.example.automatictextprocessing;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.example.automatictextprocessing.exceptions.FileEmptyException;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ProcessData {
+    private static final Logger logger = LogManager.getLogger(ProcessData.class);
+
     public static void main(String[] args) {
         /*
-         * DEALING WITH PROCESSING DATA FROM A TEXT
+         * DEALING WITH PROCESSING DATA FROM A TEXT INPUT
          */
 
         // ##### Search a string from a text ######
@@ -19,6 +32,41 @@ public class ProcessData {
         String text1 = "078 298 3266";
         System.out.println(textProcessor.replaceText(text, "\\bcat\\b", "dog"));
         System.out.println(textProcessor.replaceText(text1, "\\s", "-"));
+
+        /*
+         * DEALING WITH PROCESSING DATA FROM A FILE
+         */
+        // ##### Read text from a file ######
+        System.out.println("##### Read text from a file ######");
+        ProcessFile fileProcessor = new ProcessFile();
+
+        try {
+            String readText = fileProcessor
+                    .readFromAFile("src/main/java/org/example/automatictextprocessing/file2.txt");
+            System.out.println(readText);
+        } catch (IOException | FileEmptyException e) {
+            if (e instanceof FileNotFoundException) {
+                logger.log(Level.ERROR, "File selected not found !!");
+            } else {
+                logger.log(Level.ERROR, e.getMessage());
+            }
+        }
+
+        // ##### Write to a file ######
+        System.out.println("##### Write to a file ######");
+
+        try {
+            String text3 = "This is what I always wanted!!";
+            fileProcessor
+                    .writeToFile("src/main/java/org/example/automatictextprocessing/file3.txt", text3);
+            System.out.println("File has been written to successfully !!!");
+        } catch (IOException e) {
+            if (e instanceof FileNotFoundException) {
+                logger.log(Level.ERROR, "File selected not found !!");
+            } else {
+                logger.log(Level.ERROR, e.getMessage());
+            }
+        }
 
     }
 }

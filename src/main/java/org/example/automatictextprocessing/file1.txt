@@ -1,0 +1,2 @@
+This is written using FileWriter.
+It writes one character at a time.
