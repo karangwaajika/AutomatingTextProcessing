@@ -70,9 +70,9 @@ public class Controller {
             String maritalStatus = maritalStatusComboBox.getValue();
             int age = Integer.parseInt(ageField.getText());
             boolean isEmployed = isEmployedCheckBox.isSelected();
-            String dateDivorced = divorcedDateField.toString();
-            String dateMarried = marriageDateField.toString();
-            String spouseDeathDate = spouseDateField.toString();
+            String dateDivorced = divorcedDateField.getValue() != null ? divorcedDateField.getValue().toString() : "-";
+            String dateMarried = marriageDateField.getValue() != null ? marriageDateField.getValue().toString() : "-";
+            String spouseDeathDate = spouseDateField.getValue() != null ? spouseDateField.getValue().toString() : "-";
             boolean isInRelationship = isInRelationshipCheckBox.isSelected();
 
 
