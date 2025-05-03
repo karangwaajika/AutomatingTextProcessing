@@ -1,2 +1,25 @@
-This is written using FileWriter.
-It writes one character at a time.
+1199781054903076 | Sarah Davian | 24 | Single | true | true
+1199783054901076 | Kahlina Solange | 50 | Married | true | 2020-03-23
+1199783054908076 | Minione Olala | 48 | Married | true | 2005-03-23
+1199783054904076 | Fiona Petero | 76 | Married | true | 2006-03-23
+1199783054905076 | Uwase Sonia | 37 | Married | true | 2012-03-23
+1199783054906076 | Davina Uwimana| 28 | Married | true | 2020-03-23
+1199712054907076 | Don Fiona | 32 | Widowed | true | 2012-02-12
+1199794054907076 | Beyonce Jane | 56 | Widowed | false | 1990-02-12
+1199774054907076 | Kelly Rally | 62 | Widowed | false | 2012-02-12
+1199764054907076 | Naomi Hona | 52 | Widowed | true | 2022-02-12
+1199754054907076 | Wanne Tresor | 32 | Widowed | false | 2015-02-12
+1199744054907076 | Elliane Pokey | 42 | Widowed | true | 2012-02-12
+1199734054907076 | Karenzi Koana | 60 | Widowed | false | 2012-11-12
+1199724054907076 | Poana Moana | 72 | Widowed | false | 1980-12-12
+1199714054907076 | Don Fiona | 32 | Widowed | false | 1998-02-12
+1199785054907076 | Kelvine Bakenzi | 59 | Divorced | true | 2023-08-09
+1199785054997076 | Vionna Lakenzi | 75 | Divorced | true | 2016-08-39
+1199785054987076 | Tenzo Fally | 59 | Divorced | false | 1997-03-19
+1199785054977076 | Beatrice Ndoki | 35 | Divorced | true | 2023-08-09
+1199785054967076 | Mutesi Bakayoko | 47 | Divorced | true | 2017-10-16
+1199785054957076 | Rachel Nyiranzo | 34 | Divorced | true | 2018-08-09
+1199786054947076 | Keys Alicia | 30 | Single | false | true
+1199786054937076 | Jeanne Mowana | 67 | Single | true | true
+1199786054927076 | Alliah Gorgeous | 26 | Single | false | false
+1199786054917076 | Zalandy Belinda | 45 | Single | true | false

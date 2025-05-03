@@ -1,17 +1,16 @@
 package org.example.automatictextprocessing;
 
-import org.example.automatictextprocessing.exceptions.FileEmptyException;
+import org.example.automatictextprocessing.exceptions.*;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.regex.Pattern;
 
 public class ProcessFile {
     public String readFromAFile(String path) throws IOException {
 
         FileReader fr = null;
         fr = new FileReader(path);
-        if (fr.read() == -1) {
-            throw new FileEmptyException("The file is empty !!!");
-        }
         BufferedReader reader = new BufferedReader(fr);
         String line;
         String result = "";
@@ -38,4 +37,74 @@ public class ProcessFile {
         fw.close();
 
     }
+
+    public String cleanData(String path, String separator) throws IOException {
+
+        FileReader fr = null;
+        fr = new FileReader(path);
+        BufferedReader reader = new BufferedReader(fr);
+        String line;
+        String result = "Perfect";
+
+        int countLine = 0;
+        while ((line = reader.readLine()) != null) {
+            countLine++;
+            String[] womanData = new String[6];
+            womanData = line.split(separator);
+            if (line.split(separator).length != 6) {
+                throw new InvalidWomanDataException("Woman information is missing some fields at line " + countLine);
+            }
+
+            String nationalId = womanData[0].trim();
+            if (nationalId.length() != 16 || !(Pattern.matches("\\d+", nationalId))) {
+                throw new InvalidNationaldException("Invalid national ID at line " + countLine);
+            }
+
+            String name = womanData[1].trim();
+            if (!(Pattern.matches("^[a-zA-Z\\s]+$", name))) {
+                throw new InvalidNameException("Invalid name at line " + countLine);
+            }
+
+            String age = womanData[2].trim();
+            if (!(Pattern.matches("\\d+", age))) {
+                throw new InvalidAgeException("Invalid age at line " + countLine);
+            }
+
+            String maritalStatus = womanData[3].trim();
+            if (!(maritalStatus.matches("^[a-zA-Z\\s]+$"))) {
+                throw new InvalidMaritalStatusException("Invalid marital status at line " + countLine);
+            }
+
+            String isEmployed = womanData[4].trim().toLowerCase();
+            if (!(isEmployed.matches("false|true"))) {
+                throw new InvalidBooleanException("Please provide a boolean string at line " + countLine);
+            }
+
+            String lastField = womanData[5].trim();
+            if (maritalStatus.equals("Single")) {
+                if (!(lastField.matches("false|true"))) {
+                    throw new InvalidBooleanException("Please provide a boolean string at line " + countLine);
+                }
+            } else {
+
+                long countDatePart = Arrays.stream(lastField.split("-"))
+                        .filter(n -> Pattern.matches("\\d+", n))
+                        .count();
+                if (countDatePart != 3) {
+                    throw new InvalidDateException("Please follow 2022-12-20 format, date is invalid at "
+                            + countLine);
+                }
+
+            }
+
+        }
+        fr.close();
+        reader.close();
+        return result;
+
+    }
+
+    // create woman object
+
+
 }

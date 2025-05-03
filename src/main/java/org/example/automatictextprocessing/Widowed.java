@@ -3,9 +3,9 @@ package org.example.automatictextprocessing;
 public class Widowed extends Woman {
     private String spouseDeathDate;
 
-    public Widowed(int womanId, String name, int age, String maritalStatus,
+    public Widowed(String nationalId, int womanId, String name, int age, String maritalStatus,
                    boolean isEmployed, String spouseDeathDate) {
-        super(womanId, name, age, maritalStatus, isEmployed);
+        super(nationalId, womanId, name, age, maritalStatus, isEmployed);
         this.spouseDeathDate = spouseDeathDate;
     }
 

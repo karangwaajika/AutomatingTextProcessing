@@ -16,6 +16,7 @@ import org.example.automatictextprocessing.exceptions.*;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.regex.Pattern;
 
 public class Controller {
     // input fields
@@ -34,6 +35,8 @@ public class Controller {
     @FXML
     private TextField ageField;
     @FXML
+    private TextField nationalIdField;
+    @FXML
     private CheckBox isEmployedCheckBox;
 
     // table fields
@@ -41,6 +44,8 @@ public class Controller {
     private TableView<Woman> womanTable;
     @FXML
     private TableColumn<Woman, String> nameColumn;
+    @FXML
+    private TableColumn<Woman, String> nationalIdColumn;
     @FXML
     private TableColumn<Woman, Integer> ageColumn;
     @FXML
@@ -68,7 +73,17 @@ public class Controller {
         try {
             String name = nameField.getText();
             String maritalStatus = maritalStatusComboBox.getValue();
+            if (!(Pattern.matches("\\d+", ageField.getText()))) {
+                throw new InvalidAgeException("Age is invalid");
+            }
+            if (!(Pattern.matches("\\d+", nationalIdField.getText()))) {
+                throw new InvalidNationaldException("National ID is invalid");
+            }
+            if (nationalIdField.getText().length() != 16) {
+                throw new InvalidAgeException("National ID must be 16 digits long");
+            }
             int age = Integer.parseInt(ageField.getText());
+            String nationalId = nationalIdField.getText();
             boolean isEmployed = isEmployedCheckBox.isSelected();
             String dateDivorced = divorcedDateField.getValue() != null ? divorcedDateField.getValue().toString() : "-";
             String dateMarried = marriageDateField.getValue() != null ? marriageDateField.getValue().toString() : "-";
@@ -77,7 +92,7 @@ public class Controller {
 
 
             // add woman to Database(Hashmap)
-            Woman woman = createWoman(maritalStatus, name, age, isEmployed, isInRelationship,
+            Woman woman = createWoman(nationalId, maritalStatus, name, age, isEmployed, isInRelationship,
                     dateMarried, dateDivorced, spouseDeathDate);
             db.addWoman(woman.getWomanId(), woman);
             womenList.setAll(db.getAllWomen()); // make table auto-refresh
@@ -89,7 +104,7 @@ public class Controller {
 
         } catch (NotEmptyDateDivorcedException | NotEmptyDateMarriedException |
                  NotEmptyMaritalStatusException | NotEmptyNameException |
-                 NotEmptySpouseDeathDateException | UnderAgeException e) {
+                 NotEmptySpouseDeathDateException | InvalidAgeException | UnderAgeException e) {
             System.out.println("⚠️ Error: " + e.getMessage());
             showAlert(Alert.AlertType.ERROR, "Error",
                     "⚠️ Error: " + e.getMessage());
@@ -249,17 +264,17 @@ public class Controller {
     }
 
     // create woman object
-    private Woman createWoman(String maritalStatus, String name, int age, boolean isEmployed,
+    private Woman createWoman(String nationalId, String maritalStatus, String name, int age, boolean isEmployed,
                               boolean isInRelationship, String dateMarried, String dateDivorced,
                               String spouseDeathDate) {
         return switch (maritalStatus) {
-            case "Single" -> new Single(Woman.womanNbr, name, age,
+            case "Single" -> new Single(nationalId, Woman.womanNbr, name, age,
                     maritalStatus, isEmployed, isInRelationship);
-            case "Married" -> new Married(Woman.womanNbr, name, age,
+            case "Married" -> new Married(nationalId, Woman.womanNbr, name, age,
                     maritalStatus, isEmployed, dateMarried);
-            case "Divorced" -> new Divorced(Woman.womanNbr, name, age,
+            case "Divorced" -> new Divorced(nationalId, Woman.womanNbr, name, age,
                     maritalStatus, isEmployed, dateDivorced);
-            default -> new Widowed(Woman.womanNbr, name, age,
+            default -> new Widowed(nationalId, Woman.womanNbr, name, age,
                     maritalStatus, isEmployed, spouseDeathDate);
         };
     }

@@ -3,7 +3,7 @@ package org.example.automatictextprocessing;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.example.automatictextprocessing.exceptions.FileEmptyException;
+import org.example.automatictextprocessing.exceptions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -61,6 +61,24 @@ public class ProcessData {
                     .writeToFile("src/main/java/org/example/automatictextprocessing/file3.txt", text3);
             System.out.println("File has been written to successfully !!!");
         } catch (IOException e) {
+            if (e instanceof FileNotFoundException) {
+                logger.log(Level.ERROR, "File selected not found !!");
+            } else {
+                logger.log(Level.ERROR, e.getMessage());
+            }
+        }
+
+        // ##### clean women data from a list #########
+        try {
+            String result1 = fileProcessor
+                    .cleanData("src/main/java/org/example/automatictextprocessing/file1.txt", "\\|");
+            System.out.println("Result: " + result1);
+        } catch (NotEmptyDateDivorcedException | NotEmptyDateMarriedException | NotEmptyMaritalStatusException |
+                 NotEmptyNameException | NotEmptySpouseDeathDateException | UnderAgeException | IOException |
+                 InvalidMaritalStatusException | InvalidAgeException | InvalidBooleanException |
+                 InvalidNameException | InvalidDateException | InvalidWomanDataException |
+                 InvalidNationaldException e) {
+
             if (e instanceof FileNotFoundException) {
                 logger.log(Level.ERROR, "File selected not found !!");
             } else {
