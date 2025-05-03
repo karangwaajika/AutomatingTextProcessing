@@ -49,12 +49,21 @@
 
                         <CheckBox fx:id="isEmployedCheckBox" text="Is Employed"/>
                     </HBox>
+
                     <DatePicker fx:id="marriageDateField"
-                               promptText="Enter date of marriage (YYYY-MM-DD)"
-                               visible="false"/>
+                                promptText="Enter date of marriage (YYYY-MM-DD)"
+                                visible="false" managed="false"/>
+                    <CheckBox fx:id="isInRelationshipCheckBox" text="Is in relationship"
+                              visible="false" managed="false"/>
+                    <DatePicker fx:id="spouseDateField"
+                                promptText="Enter date of death (YYYY-MM-DD)"
+                                visible="false" managed="false"/>
+                    <DatePicker fx:id="divorcedDateField"
+                                promptText="Enter date of divorce (YYYY-MM-DD)"
+                                visible="false" managed="false"/>
 
 
-                    <Button text="Submit"/>
+                    <Button text="Submit" onAction="#handleSubmit"/>
                 </VBox>
             </VBox>
             <Separator orientation="VERTICAL" prefWidth="1"/>
