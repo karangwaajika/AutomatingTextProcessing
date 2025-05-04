@@ -462,14 +462,13 @@ public class Controller {
 
         try {
             if (dataTypeComboBox.getValue().equals("Text")) {
-                regxResults.setText(fileProcessor.cleanTextData(textArea.getText(), separatorField.getText()));
-                regxResults.setVisible(true);
-                regxResults.setManaged(true);
+                regxResults.setText(fileProcessor.cleanData(textArea.getText(), separatorField.getText(), "text"));
+
             }else{
-                regxResults.setText(fileProcessor.cleanFileData(fileField.getText(), separatorField.getText()));
-                regxResults.setVisible(true);
-                regxResults.setManaged(true);
+                regxResults.setText(fileProcessor.cleanData(fileField.getText(), separatorField.getText(), "file"));
             }
+            regxResults.setVisible(true);
+            regxResults.setManaged(true);
         } catch (NotEmptyDateDivorcedException | NotEmptyDateMarriedException | NotEmptyMaritalStatusException |
                  NotEmptyNameException | NotEmptySpouseDeathDateException | UnderAgeException | IOException |
                  InvalidMaritalStatusException | InvalidAgeException | InvalidBooleanException |
@@ -479,6 +478,41 @@ public class Controller {
                     "⚠️ Error: " + e.getMessage());
         }
 
+    }
+
+    public void submitReplaceData(ActionEvent actionEvent) {
+        ProcessText textProcessor = new ProcessText();
+        try {
+            if (dataTypeComboBox.getValue().equals("Text")) {
+                regxResults.setText(textProcessor.replaceText(textArea.getText(),
+                        regexField.getText(), replaceByField.getText(), "text"));
+            }else{
+                regxResults.setText(textProcessor.replaceText(fileField.getText(),
+                        regexField.getText(), replaceByField.getText(), "file"));
+            }
+            regxResults.setVisible(true);
+            regxResults.setManaged(true);
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error",
+                    "⚠️ Error: " + e.getMessage());
+        }
+    }
+    public void submitSearchData(ActionEvent actionEvent) {
+        ProcessText textProcessor = new ProcessText();
+        try {
+            if (dataTypeComboBox.getValue().equals("Text")) {
+                regxResults.setText(textProcessor.searchText(textArea.getText(),
+                        regexField.getText(), "text"));
+            }else{
+                regxResults.setText(textProcessor.searchText(fileField.getText(),
+                        regexField.getText(), "file"));
+            }
+            regxResults.setVisible(true);
+            regxResults.setManaged(true);
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error",
+                    "⚠️ Error: " + e.getMessage());
+        }
     }
 
     public void insertCleanedDataToDB(ActionEvent actionEvent) throws IOException{
@@ -495,31 +529,31 @@ public class Controller {
 
         String line;
         try {
-        while((line = reader.readLine()) != null) {
-            // extract field for insertion
-            String[] womanData = line.split(separatorField.getText().isEmpty() ? "\\|" : separatorField.getText());
-            String nationalId = womanData[0].trim();
-            String name = womanData[1].trim();
-            int age = Integer.parseInt(womanData[2].trim());
-            String maritalStatus = womanData[3].trim();
-            boolean isEmployed = Boolean.parseBoolean(womanData[4].trim().toLowerCase());
-            String lastField = womanData[5].trim();
-            boolean isInRelationship = false;
-            String marriedDate = "";
-            String divorcedDate = "";
-            String spouseDeathDate = "";
-            if (maritalStatus.equalsIgnoreCase("Single")) {
-                isInRelationship = Boolean.parseBoolean(lastField);
-            } else if (maritalStatus.equalsIgnoreCase("Married")) {
-                marriedDate = lastField;
-            } else if (maritalStatus.equalsIgnoreCase("Divorced")) {
-                divorcedDate = lastField;
-            } else {
-                spouseDeathDate = lastField;
-            }
+            while((line = reader.readLine()) != null) {
+                // extract field for insertion
+                String[] womanData = line.split(separatorField.getText().isEmpty() ? "\\|" : separatorField.getText());
+                String nationalId = womanData[0].trim();
+                String name = womanData[1].trim();
+                int age = Integer.parseInt(womanData[2].trim());
+                String maritalStatus = womanData[3].trim();
+                boolean isEmployed = Boolean.parseBoolean(womanData[4].trim().toLowerCase());
+                String lastField = womanData[5].trim();
+                boolean isInRelationship = false;
+                String marriedDate = "";
+                String divorcedDate = "";
+                String spouseDeathDate = "";
+                if (maritalStatus.equalsIgnoreCase("Single")) {
+                    isInRelationship = Boolean.parseBoolean(lastField);
+                } else if (maritalStatus.equalsIgnoreCase("Married")) {
+                    marriedDate = lastField;
+                } else if (maritalStatus.equalsIgnoreCase("Divorced")) {
+                    divorcedDate = lastField;
+                } else {
+                    spouseDeathDate = lastField;
+                }
 
-            Woman woman = createWoman(nationalId, maritalStatus, name, age, isEmployed,
-                    isInRelationship, marriedDate, divorcedDate, spouseDeathDate);
+                Woman woman = createWoman(nationalId, maritalStatus, name, age, isEmployed,
+                        isInRelationship, marriedDate, divorcedDate, spouseDeathDate);
 
                 db.addWoman(woman.getWomanId(), woman);
 
@@ -527,10 +561,10 @@ public class Controller {
             }
         }
         catch (NotEmptyDateDivorcedException | NotEmptyDateMarriedException | NotEmptyMaritalStatusException |
-                NotEmptyNameException | NotEmptySpouseDeathDateException | UnderAgeException |
-                InvalidMaritalStatusException | InvalidAgeException | InvalidBooleanException |
-                InvalidNameException | InvalidDateException | InvalidWomanDataException |
-                InvalidNationaldException e) {
+               NotEmptyNameException | NotEmptySpouseDeathDateException | UnderAgeException |
+               InvalidMaritalStatusException | InvalidAgeException | InvalidBooleanException |
+               InvalidNameException | InvalidDateException | InvalidWomanDataException |
+               InvalidNationaldException e) {
             showAlert(Alert.AlertType.ERROR, "Error",
                     "⚠️ Error: " + e.getMessage());
         }
@@ -538,44 +572,5 @@ public class Controller {
         textArea.setText("");
         regxResults.setText("");
         separatorField.setText("");
-    }
-
-    public void submitReplaceData(ActionEvent actionEvent) {
-        ProcessText textProcessor = new ProcessText();
-        try {
-            if (dataTypeComboBox.getValue().equals("Text")) {
-                regxResults.setText(textProcessor.replaceText(textArea.getText(),
-                        regexField.getText(), replaceByField.getText()));
-                regxResults.setVisible(true);
-                regxResults.setManaged(true);
-            }else{
-                regxResults.setText(textProcessor.replaceFileText(fileField.getText(),
-                        regexField.getText(), replaceByField.getText()));
-                regxResults.setVisible(true);
-                regxResults.setManaged(true);
-            }
-        } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error",
-                    "⚠️ Error: " + e.getMessage());
-        }
-    }
-    public void submitSearchData(ActionEvent actionEvent) {
-        ProcessText textProcessor = new ProcessText();
-        try {
-            if (dataTypeComboBox.getValue().equals("Text")) {
-                regxResults.setText(textProcessor.searchTextFromInput(textArea.getText(),
-                        regexField.getText()));
-                regxResults.setVisible(true);
-                regxResults.setManaged(true);
-            }else{
-                regxResults.setText(textProcessor.searchTextFromFile(fileField.getText(),
-                        regexField.getText()));
-                regxResults.setVisible(true);
-                regxResults.setManaged(true);
-            }
-        } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error",
-                    "⚠️ Error: " + e.getMessage());
-        }
     }
 }

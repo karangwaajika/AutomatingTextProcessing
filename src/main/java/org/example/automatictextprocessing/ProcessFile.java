@@ -38,32 +38,22 @@ public class ProcessFile {
 
     }
 
-    public String cleanFileData(String path, String separator) throws IOException {
-        FileReader fr = null;
-        fr = new FileReader(path);
+    public String cleanData(String data, String separator, String typeOfData) throws IOException {
+        BufferedReader reader = null;
+        if(typeOfData.equals("text")){
+            reader = new BufferedReader(new StringReader(data));
+        }else{
+            reader = new BufferedReader(new FileReader(data));
+        }
 
-        BufferedReader reader = new BufferedReader(fr);
-
-        String cleanedData = cleanData(reader, separator);
-
-        fr.close();
+        String cleanedData = clean(reader, separator);
         reader.close();
 
         return cleanedData;
 
     }
 
-    public String cleanTextData(String text, String separator) throws IOException {
-
-        BufferedReader reader = new BufferedReader(new StringReader(text));
-        String cleanedData = cleanData(reader, separator);
-        reader.close();
-
-        return cleanedData;
-
-    }
-
-    private String cleanData(BufferedReader reader, String separator) throws IOException {
+    private String clean(BufferedReader reader, String separator) throws IOException {
         String line;
         String formatedData = "";
 

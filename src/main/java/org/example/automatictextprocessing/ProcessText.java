@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class ProcessText {
 
-    public String searchText(String text, String regex) {
+    public String searchShortText(String text, String regex) {
         Pattern pat = Pattern.compile(regex);
         Matcher mat = pat.matcher(text);
         String result = "";
@@ -27,9 +27,13 @@ public class ProcessText {
 
     }
 
-    public String searchTextFromInput(String text, String regex) throws IOException {
-
-        BufferedReader reader = new BufferedReader(new StringReader(text));
+    public String searchText(String data, String regex, String typeOfData) throws IOException {
+        BufferedReader reader = null;
+        if(typeOfData.equals("text")){
+            reader = new BufferedReader(new StringReader(data));
+        }else{
+            reader = new BufferedReader(new FileReader(data));
+        }
 
         String line;
         String formatedData = "";
@@ -48,46 +52,14 @@ public class ProcessText {
 
     }
 
-    public String searchTextFromFile(String path, String regex) throws IOException {
-
-        BufferedReader reader = new BufferedReader(new FileReader(path));
-
-        String line;
-        String formatedData = "";
-
-        while ((line = reader.readLine()) != null) {
-            Pattern pat = Pattern.compile(regex);
-            Matcher mat = pat.matcher(line);
-            if(mat.find()){
-                formatedData += line+"\n";
-
-            }
+    public String replaceText(String data, String replace, String by, String typeOfData) throws IOException {
+        BufferedReader reader = null;
+        if(typeOfData.equals("text")){
+            reader = new BufferedReader(new StringReader(data));
+        }else{
+            reader = new BufferedReader(new FileReader(data));
         }
-        reader.close();
 
-        return formatedData;
-
-    }
-
-    public String replaceText(String text, String replace, String by) throws IOException {
-        BufferedReader reader = new BufferedReader(new StringReader(text));
-
-        String line;
-        String formatedData = "";
-
-        while ((line = reader.readLine()) != null) {
-            Pattern pat = Pattern.compile(replace);
-            Matcher mat = pat.matcher(line);
-            formatedData += mat.replaceAll(by)+"\n";
-        }
-        reader.close();
-
-        return formatedData;
-
-    }
-
-    public String replaceFileText(String path, String replace, String by) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(path));
         String line;
         String formatedData = "";
 
