@@ -2,14 +2,16 @@ package org.example.automatictextprocessing;
 
 public class Woman {
     private final int womanId;
+    protected String nationalId;
     protected String name;
     protected int age;
     protected String maritalStatus;
     protected boolean isEmployed;
     static int womanNbr = 1;
 
-    public Woman(int womanId, String name, int age,
+    public Woman(String nationalId, int womanId, String name, int age,
                  String maritalStatus, boolean isEmployed) {
+        this.nationalId = nationalId;
         this.womanId = womanId;
         this.age = age;
         this.name = name;
@@ -36,6 +38,14 @@ public class Woman {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public void setNationalId(String nationalId) {
+        this.nationalId = nationalId;
+    }
+
+    public String getNationalId() {
+        return this.nationalId;
     }
 
     public String getMaritalStatus() {

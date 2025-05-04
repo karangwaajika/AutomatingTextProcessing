@@ -3,9 +3,9 @@ package org.example.automatictextprocessing;
 public class Single extends Woman {
     private boolean isInRelationship;
 
-    public Single(int womanId, String name, int age, String maritalStatus,
+    public Single(String nationalId, int womanId, String name, int age, String maritalStatus,
                   boolean isEmployed, boolean isInRelationship) {
-        super(womanId, name, age, maritalStatus, isEmployed);
+        super(nationalId, womanId, name, age, maritalStatus, isEmployed);
         this.isInRelationship = isInRelationship;
     }
 

@@ -13,6 +13,14 @@ public class Database {
         if (woman.maritalStatus.isEmpty()) {
             throw new NotEmptyMaritalStatusException("Marital status cannot be empty!!!");
         }
+        long countWomen = women.values().stream()
+                .filter(w -> w.getNationalId() == woman.getNationalId())
+                .count();
+        if (countWomen > 0) {
+            throw new WomanExistException("Woman ID provided of " + woman.name + " exists already: "
+                    + woman.getNationalId());
+        }
+
         switch (woman.maritalStatus) {
             case "Married":
                 Married m = (Married) woman;
@@ -42,6 +50,10 @@ public class Database {
         if (woman.name.isEmpty()) {
             throw new NotEmptyNameException("Name cannot be empty !!!");
         }
+        if (!(woman.name.matches("^[a-zA-Z\\s]+$"))) {
+            throw new InvalidNameException("Name is invalid !!!");
+        }
+
 
         women.put(womanId, woman); // insert employee
         return "Woman's added successfully !!";
