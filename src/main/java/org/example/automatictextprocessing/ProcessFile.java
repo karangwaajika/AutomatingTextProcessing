@@ -136,7 +136,5 @@ public class ProcessFile {
         return formatedData;
     }
 
-    // create woman object
-
 
 }

@@ -27,6 +27,48 @@ public class ProcessText {
 
     }
 
+    public String searchTextFromInput(String text, String regex) throws IOException {
+
+        BufferedReader reader = new BufferedReader(new StringReader(text));
+
+        String line;
+        String formatedData = "";
+
+        while ((line = reader.readLine()) != null) {
+            Pattern pat = Pattern.compile(regex);
+            Matcher mat = pat.matcher(line);
+            if(mat.find()){
+                formatedData += line+"\n";
+
+            }
+        }
+        reader.close();
+
+        return formatedData;
+
+    }
+
+    public String searchTextFromFile(String path, String regex) throws IOException {
+
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+
+        String line;
+        String formatedData = "";
+
+        while ((line = reader.readLine()) != null) {
+            Pattern pat = Pattern.compile(regex);
+            Matcher mat = pat.matcher(line);
+            if(mat.find()){
+                formatedData += line+"\n";
+
+            }
+        }
+        reader.close();
+
+        return formatedData;
+
+    }
+
     public String replaceText(String text, String replace, String by) throws IOException {
         BufferedReader reader = new BufferedReader(new StringReader(text));
 

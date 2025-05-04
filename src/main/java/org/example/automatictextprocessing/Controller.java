@@ -559,4 +559,23 @@ public class Controller {
                     "⚠️ Error: " + e.getMessage());
         }
     }
+    public void submitSearchData(ActionEvent actionEvent) {
+        ProcessText textProcessor = new ProcessText();
+        try {
+            if (dataTypeComboBox.getValue().equals("Text")) {
+                regxResults.setText(textProcessor.searchTextFromInput(textArea.getText(),
+                        regexField.getText()));
+                regxResults.setVisible(true);
+                regxResults.setManaged(true);
+            }else{
+                regxResults.setText(textProcessor.searchTextFromFile(fileField.getText(),
+                        regexField.getText()));
+                regxResults.setVisible(true);
+                regxResults.setManaged(true);
+            }
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error",
+                    "⚠️ Error: " + e.getMessage());
+        }
+    }
 }

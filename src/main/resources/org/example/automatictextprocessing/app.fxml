@@ -100,7 +100,7 @@
                 <TextArea fx:id="textArea" visible="false" managed="false" prefWidth="300" prefHeight="100" promptText="Enter your text here..." />
                 <Button fx:id="cleaningButtonSubmit" onAction="#submitCleanData" text="Clean Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
                 <Button fx:id="replaceButtonSubmit" onAction="#submitReplaceData" text="Replace Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                <Button fx:id="searchButtonSubmit" text="Search Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button fx:id="searchButtonSubmit" onAction="#submitSearchData" text="Search Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
             </VBox>
             <Separator orientation="VERTICAL" prefWidth="1"/>
 

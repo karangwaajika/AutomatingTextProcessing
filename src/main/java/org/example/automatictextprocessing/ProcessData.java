@@ -22,9 +22,8 @@ public class ProcessData {
         // ##### Search a string from a text ######
         System.out.println("##### Search a string from a text ######");
         ProcessText textProcessor = new ProcessText();
-        String text = "The cat sat on the cathedral and caught a caterpillar\n" +
-                "I have many things to do with my cat";
-        String result = textProcessor.searchText(text, "\\bcat\\b");
+        String text = "sat on the cthedral and caught a cterpillar\nI have many things to do with my cat";
+        String result = textProcessor.searchTextFromInput(text, "\\bcat\\b");
         System.out.println(result);
 
         // ##### Replace a string ######
