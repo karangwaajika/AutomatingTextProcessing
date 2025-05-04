@@ -75,12 +75,23 @@ public class Database {
 
     public List<Woman> filterByMaritalStatus(String field) {
         List<Woman> womenList = women.values().stream()
-                .filter(w -> w.getMaritalStatus().equals(field)).toList();
+                .filter(w -> w.getMaritalStatus().equalsIgnoreCase(field)).toList();
         if (womenList.isEmpty()) {
             throw new InvalidMaritalStatusException("No Marital status with the name '"
                     + field + "'");
         }
 
+        return womenList;
+    }
+
+
+    public List<Woman> filterByName(String field) {
+        List<Woman> womenList = women.values().stream()
+                .filter(w -> w.getName().contains(field)).toList();
+        if (womenList.isEmpty()) {
+            throw new InvalidNameException("No woman with the name '"
+                    + field + "'");
+        }
         return womenList;
     }
 

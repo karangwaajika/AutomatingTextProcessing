@@ -121,6 +121,35 @@
             </VBox>
         </HBox>
         <Separator prefWidth="1"/>
+       <HBox spacing="10">
+        <VBox spacing="10">
+        <HBox spacing="10">
+            <TextField fx:id="searchField" promptText="Search..." HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+
+            <ComboBox fx:id="maritalStatusFilterComboBox" promptText="Filter by Marital status" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Filter All"/>
+                        <String fx:value="Single"/>
+                        <String fx:value="Married"/>
+                        <String fx:value="Divorced"/>
+                        <String fx:value="Widowed"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <ComboBox fx:id="sortComboBox" promptText="Sort by" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Sort by"/>
+                        <String fx:value="Age (old->young)"/>
+                        <String fx:value="Age (young->old)"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <Button fx:id="deleteButton" onAction="#handleDeleteWoman" text="Delete Selected" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        </HBox>
         <HBox>
             <!-- TableView -->
             <TableView fx:id="womanTable" prefHeight="200" prefWidth="735">
@@ -138,6 +167,22 @@
                 </columns>
             </TableView>
         </HBox>
+        </VBox>
+
+        <VBox alignment="TOP_CENTER" prefWidth="500" spacing="10" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+
+            <Label text="Statistics Report"
+                   style="-fx-font-size: 15px; -fx-font-weight: bold;"
+            />
+
+            <ScrollPane prefHeight="200" xmlns="http://javafx.com/javafx"
+                        xmlns:fx="http://javafx.com/fxml" pannable="true"
+            >
+                <Label fx:id="regxResul" visible="false" managed="false" wrapText="true" style="-fx-padding: 5 10;"/>
+            </ScrollPane>
+
+        </VBox>
+       </HBox>
 
 
     </VBox>

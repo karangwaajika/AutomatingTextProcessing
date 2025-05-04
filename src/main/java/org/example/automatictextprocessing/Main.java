@@ -46,9 +46,9 @@ public class Main {
             logger.log(Level.ERROR, e.getMessage());
         }
 
-        // Filter by department
+        // Filter by Marital status
         try {
-            List<Woman> womenList = db.filterByMaritalStatus("Singles");
+            List<Woman> womenList = db.filterByName("So");
             System.out.println("##### Filtered ######");
             womenList.forEach((woman) -> {
                 System.out.printf("%d| name:%s, age: %d, marital_status: %s, Employed: %b\n",

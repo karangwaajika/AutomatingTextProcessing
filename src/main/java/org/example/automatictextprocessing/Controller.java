@@ -22,6 +22,9 @@ import org.example.automatictextprocessing.exceptions.*;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class Controller {
@@ -58,6 +61,14 @@ public class Controller {
     public HBox fileContents;
     @FXML
     public Label regxResults;
+    @FXML
+    public TextField searchField;
+    @FXML
+    public ComboBox<String> maritalStatusFilterComboBox;
+    @FXML
+    public ComboBox<String> sortComboBox;
+    @FXML
+    public Button deleteButton;
     @FXML
     private TextField nameField;
     @FXML
@@ -284,6 +295,88 @@ public class Controller {
             }
         });
         spouseDateField.setPromptText("yyyy-MM-dd");
+
+        // filter
+        maritalStatusFilterComboBox.setValue("Filter All"); // Default
+        maritalStatusFilterComboBox.setOnAction(e -> applyFilterByMaritalStatus());
+
+        // sorting
+        sortComboBox.setValue("Sort by");
+        sortComboBox.setOnAction(e -> applySortBy());
+
+        // search by name
+        searchField.textProperty().addListener((obs,
+                                                oldVal, newVal) -> applySearchByName());
+    }
+
+    public void applySearchByName() {
+        String searchText = searchField.getText();
+        ObservableList<Woman> womenList = FXCollections
+                .observableArrayList(db.filterByName(searchText));
+
+        womanTable.setItems(womenList); // update table
+    }
+    public void applyFilterByMaritalStatus() {
+        String maritalFilter = maritalStatusFilterComboBox.getValue();
+        if (maritalFilter.equals("Filter All")) {
+            ObservableList<Woman> womanList = FXCollections
+                    .observableArrayList(db.getAllWomen());
+            womanTable.setItems(womanList);
+        } else {
+            ObservableList<Woman> womanList = FXCollections
+                    .observableArrayList(db.filterByMaritalStatus(maritalFilter));
+            womanTable.setItems(womanList);
+        }
+    }
+    public void applySortBy() {
+        String sortOption = sortComboBox.getValue();
+        switch (sortOption) {
+            case "Sort by":
+                ObservableList<Woman> womanList = FXCollections
+                        .observableArrayList(db.getAllWomen());
+                womanTable.setItems(womanList);
+                break;
+            case "Age (young->old)":
+                // sort using comparator
+                ArrayList<Woman> women = db.getAllWomen();
+                Collections.sort(women, new SortAgeAscending());
+                ObservableList<Woman> womenList = FXCollections
+                        .observableArrayList(women);
+                womanTable.setItems(womenList);
+                break;
+            default:
+                // sort using comparator
+                ArrayList<Woman> womaList = db.getAllWomen();
+                Collections.sort(womaList, new SortAgeDescending());
+                ObservableList<Woman> allWomen = FXCollections
+                        .observableArrayList(womaList);
+                womanTable.setItems(allWomen);
+        }
+    }
+
+    @FXML
+    private void handleDeleteWoman() {
+        Woman selectedWoman = womanTable.getSelectionModel().getSelectedItem();
+
+        if (selectedWoman == null) {
+            showAlert(Alert.AlertType.WARNING, "No Selection", "Please select an woman to delete.");
+            return;
+        }
+
+        // Confirm before deleting
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Confirm Delete");
+        confirmAlert.setHeaderText(null);
+        confirmAlert.setContentText("Are you sure you want to delete this woman?");
+
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            db.removeWoman(selectedWoman.getWomanId());
+            ArrayList<Woman> womenList = db.getAllWomen();
+            ObservableList<Woman> allWomen = FXCollections
+                    .observableArrayList(womenList);
+            womanTable.setItems(allWomen);
+        }
     }
 
     // disable future dates
