@@ -70,8 +70,9 @@ public class ProcessData {
 
         // ##### clean women data from a list #########
         try {
+            String m = "1199786054927076 | Alliah Gorgeous | 26 | Single | false | false";
             String result1 = fileProcessor
-                    .cleanData("src/main/java/org/example/automatictextprocessing/file1.txt", "\\|");
+                    .cleanTextData(m, "|");
             System.out.println("Result: " + result1);
         } catch (NotEmptyDateDivorcedException | NotEmptyDateMarriedException | NotEmptyMaritalStatusException |
                  NotEmptyNameException | NotEmptySpouseDeathDateException | UnderAgeException | IOException |

@@ -25,11 +25,11 @@
             />
         </VBox>
         <HBox spacing="10">
-            <VBox alignment="TOP_CENTER">
+            <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS" maxWidth="Infinity">
                 <Label text="Add data using form"
                        style="-fx-font-size: 16px; -fx-font-weight: bold;"
                 />
-                <Label text="This is the form to help us gather some of the information from you"
+                <Label text="Record woman information below; "
                        style="-fx-font-size: 12px; -fx-font-weight: normal;"
                 />
                 <VBox spacing="10">
@@ -67,11 +67,11 @@
                 </VBox>
             </VBox>
             <Separator orientation="VERTICAL" prefWidth="1"/>
-            <VBox alignment="TOP_CENTER" spacing="5">
+            <VBox alignment="TOP_CENTER" spacing="5" HBox.hgrow="ALWAYS" maxWidth="Infinity">
                 <Label text="Add data using input text or file"
                        style="-fx-font-size: 16px; -fx-font-weight: bold;"
                 />
-                <Label text="This is the form to help us gather some of the information from you"
+                <Label text="Use text or a file to gather woman data"
                        style="-fx-font-size: 12px; -fx-font-weight: normal;"
                 />
                 <ComboBox fx:id="dataTypeComboBox" promptText="Gather data from">
@@ -97,20 +97,26 @@
                     <Button text="Chose file..." onAction="#handleBrowseFile" prefWidth="100"/>
                 </HBox>
                 <TextArea fx:id="textArea" visible="false" managed="false" prefWidth="300" prefHeight="100" promptText="Enter your text here..." />
-                <Button fx:id="cleaningButtonSubmit" text="Clean Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button fx:id="cleaningButtonSubmit" onAction="#submitCleanData" text="Clean Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
                 <Button fx:id="replaceButtonSubmit" text="Replace Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
                 <Button fx:id="searchButtonSubmit" text="Search Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
             </VBox>
             <Separator orientation="VERTICAL" prefWidth="1"/>
 
-            <VBox alignment="TOP_CENTER" prefWidth="500" style="-fx-background-color: #ADD8E6;">
+            <VBox alignment="TOP_CENTER" prefWidth="500" spacing="10" HBox.hgrow="ALWAYS" maxWidth="Infinity">
 
-                <Label text="The processed data using Regx"
+                <Label text="The processed data from Regx"
                        style="-fx-font-size: 16px; -fx-font-weight: bold;"
                 />
-                <Label text="This is the form to help us gather some of the information from you"
+                <Label text="All the functionalities using regx is shown below;"
                        style="-fx-font-size: 12px; -fx-font-weight: normal;"
                 />
+                <ScrollPane prefHeight="200" xmlns="http://javafx.com/javafx"
+                            xmlns:fx="http://javafx.com/fxml" pannable="true"
+                            >
+                    <Label fx:id="regxResults" visible="false" managed="false" wrapText="true" style="-fx-padding: 5 10;"/>
+                </ScrollPane>
+                <Button text="Add to Database" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
             </VBox>
         </HBox>
         <Separator prefWidth="1"/>

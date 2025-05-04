@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 
 import javafx.scene.control.DatePicker;
@@ -56,6 +57,8 @@ public class Controller {
     public TextField fileField;
     @FXML
     public HBox fileContents;
+    @FXML
+    public Label regxResults;
     @FXML
     private TextField nameField;
     @FXML
@@ -447,5 +450,25 @@ public class Controller {
         if (selectedFile != null) {
             fileField.setText(selectedFile.getAbsolutePath());
         }
+    }
+
+    public void submitCleanData(ActionEvent actionEvent) {
+        ProcessFile fileProcessor = new ProcessFile();
+
+        try {
+            if (dataTypeComboBox.getValue().equals("Text")) {
+                regxResults.setText(fileProcessor.cleanTextData(textArea.getText(), separatorField.getText()));
+                regxResults.setVisible(true);
+                regxResults.setManaged(true);
+            }
+        } catch (NotEmptyDateDivorcedException | NotEmptyDateMarriedException | NotEmptyMaritalStatusException |
+                 NotEmptyNameException | NotEmptySpouseDeathDateException | UnderAgeException | IOException |
+                 InvalidMaritalStatusException | InvalidAgeException | InvalidBooleanException |
+                 InvalidNameException | InvalidDateException | InvalidWomanDataException |
+                 InvalidNationaldException e) {
+            showAlert(Alert.AlertType.ERROR, "Error",
+                    "⚠️ Error: " + e.getMessage());
+        }
+
     }
 }

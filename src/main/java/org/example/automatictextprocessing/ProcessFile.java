@@ -38,13 +38,34 @@ public class ProcessFile {
 
     }
 
-    public String cleanData(String path, String separator) throws IOException {
-
+    public String cleanFileData(String path, String separator) throws IOException {
         FileReader fr = null;
         fr = new FileReader(path);
+
         BufferedReader reader = new BufferedReader(fr);
+
+        String cleanedData = cleanData(reader, separator);
+
+        fr.close();
+        reader.close();
+
+        return cleanedData;
+
+    }
+
+    public String cleanTextData(String text, String separator) throws IOException {
+
+        BufferedReader reader = new BufferedReader(new StringReader(text));
+        String cleanedData = cleanData(reader, separator);
+        reader.close();
+
+        return cleanedData;
+
+    }
+
+    private String cleanData(BufferedReader reader, String separator) throws IOException {
         String line;
-        String result = "Perfect";
+        String formatedData = "";
 
         int countLine = 0;
         while ((line = reader.readLine()) != null) {
@@ -81,7 +102,7 @@ public class ProcessFile {
             }
 
             String lastField = womanData[5].trim();
-            if (maritalStatus.equals("Single")) {
+            if (maritalStatus.equalsIgnoreCase("Single")) {
                 if (!(lastField.matches("false|true"))) {
                     throw new InvalidBooleanException("Please provide a boolean string at line " + countLine);
                 }
@@ -96,12 +117,23 @@ public class ProcessFile {
                 }
 
             }
+            // display in a readable format
+            String lastFieldName;
+            if(maritalStatus.equalsIgnoreCase("Single")){
+                lastFieldName = "InRelationship";
+            } else if (maritalStatus.equalsIgnoreCase("Married")) {
+                lastFieldName = "Married date";
+            }else if (maritalStatus.equalsIgnoreCase("Divorced")) {
+                lastFieldName = "Divorced date";
+            }else{
+                lastFieldName = "Spouse Death date";
+            }
+            formatedData += String.format("%d. ID: %s, Name: %s, Age: %s, Marital status: %s, " +
+                    "Employed: %s, %s: %s\n", countLine ,nationalId, name, age, maritalStatus, isEmployed,
+                    lastFieldName, lastField);
 
         }
-        fr.close();
-        reader.close();
-        return result;
-
+        return formatedData;
     }
 
     // create woman object
