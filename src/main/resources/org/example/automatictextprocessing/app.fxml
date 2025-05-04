@@ -89,7 +89,7 @@
                 </HBox>
                 <HBox spacing="10">
                     <TextField fx:id="regexField" visible="false" managed="false" promptText="Regx" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                    <TextField fx:id="separatorField" visible="false" managed="false" promptText="Separator" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <TextField fx:id="separatorField" visible="false" managed="false" promptText="Regx separator" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
                     <TextField fx:id="replaceByField" visible="false" managed="false" promptText="Replace by" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
                 </HBox>
                 <HBox fx:id="fileContents" spacing="5" visible="false" managed="false" >
