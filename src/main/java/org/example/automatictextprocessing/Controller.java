@@ -394,6 +394,45 @@ public class Controller {
     }
 
     public void showSearchContent(ActionEvent actionEvent) {
+        // enable common fields
+        regexField.setVisible(true);
+        regexField.setManaged(true);
+
+        searchButtonSubmit.setVisible(true);
+        searchButtonSubmit.setManaged(true);
+
+        // disable other buttons' contents
+        replaceByField.setVisible(false);
+        replaceByField.setManaged(false);
+
+        replaceButtonSubmit.setVisible(false);
+        replaceButtonSubmit.setManaged(false);
+
+        separatorField.setVisible(false);
+        separatorField.setManaged(false);
+
+        cleaningButtonSubmit.setVisible(false);
+        cleaningButtonSubmit.setManaged(false);
+
+        if (dataTypeComboBox.getValue().equals("Text")) {
+
+            textArea.setVisible(true);
+            textArea.setManaged(true);
+
+            //disable file contents
+            fileContents.setVisible(false);
+            fileContents.setManaged(false);
+
+        }else{
+
+            fileContents.setVisible(true);
+            fileContents.setManaged(true);
+
+            // disable text contents
+            textArea.setVisible(false);
+            textArea.setManaged(false);
+
+        }
     }
 
     public void handleBrowseFile(ActionEvent actionEvent) {
