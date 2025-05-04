@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 public class ProcessData {
     private static final Logger logger = LogManager.getLogger(ProcessData.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         /*
          * DEALING WITH PROCESSING DATA FROM A TEXT INPUT
          */
@@ -22,16 +22,15 @@ public class ProcessData {
         // ##### Search a string from a text ######
         System.out.println("##### Search a string from a text ######");
         ProcessText textProcessor = new ProcessText();
-        String text = "The cat sat on the cathedral and caught a caterpillar\n" +
-                "I have many things to do with my cat";
-        String result = textProcessor.searchText(text, "\\bcat\\b");
+        String text = "sat on the cthedral and caught a cterpillar\nI have many things to do with my cat";
+        String result = textProcessor.searchText(text, "\\bcat\\b", "text");
         System.out.println(result);
 
         // ##### Replace a string ######
         System.out.println("##### Replace a string ######");
-        String text1 = "078 298 3266";
-        System.out.println(textProcessor.replaceText(text, "\\bcat\\b", "dog"));
-        System.out.println(textProcessor.replaceText(text1, "\\s", "-"));
+        String text1 = "078 298 3266\n ajika Paul";
+        System.out.println(textProcessor.replaceText(text, "\\bcat\\b", "dog", "text"));
+        System.out.println(textProcessor.replaceText(text1, "\\s", "-", "text"));
 
         /*
          * DEALING WITH PROCESSING DATA FROM A FILE
@@ -72,7 +71,7 @@ public class ProcessData {
         try {
             String m = "1199786054927076 | Alliah Gorgeous | 26 | Single | false | false";
             String result1 = fileProcessor
-                    .cleanTextData(m, "|");
+                    .cleanData(m, "|", "text");
             System.out.println("Result: " + result1);
         } catch (NotEmptyDateDivorcedException | NotEmptyDateMarriedException | NotEmptyMaritalStatusException |
                  NotEmptyNameException | NotEmptySpouseDeathDateException | UnderAgeException | IOException |
