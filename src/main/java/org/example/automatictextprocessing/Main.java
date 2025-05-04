@@ -39,6 +39,7 @@ public class Main {
             logger.log(Level.ERROR, e.getMessage());
         }
 
+
         // Delete woman
         try {
             db.removeWoman(6);
@@ -46,9 +47,9 @@ public class Main {
             logger.log(Level.ERROR, e.getMessage());
         }
 
-        // Filter by department
+        // Filter by Marital status
         try {
-            List<Woman> womenList = db.filterByMaritalStatus("Singles");
+            List<Woman> womenList = db.filterByName("So");
             System.out.println("##### Filtered ######");
             womenList.forEach((woman) -> {
                 System.out.printf("%d| name:%s, age: %d, marital_status: %s, Employed: %b\n",
@@ -66,6 +67,14 @@ public class Main {
             System.out.printf("%d| name:%s, age: %d, marital_status: %s, Employed: %b\n",
                     woman.getWomanId(), woman.getName(), woman.getAge(), woman.getMaritalStatus(),
                     woman.getIsEmployed());
+        });
+
+        // ################### View Statistics ##########################
+        System.out.println("###### Women Statistics ########");
+        db.makeStatisticReport().forEach((woman) -> {
+            System.out.printf(" Marital status:%s, Number: %d, Employed: %d, UnEmployed: %d, " +
+                    "Under_30: %d, Above_30: %d\n",woman.getMaritalStatus(), woman.getNumber(),
+                    woman.getEmployed(), woman.getUnEmployed(), woman.getAbove_30(), woman.getAbove_30());
         });
     }
 }

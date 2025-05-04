@@ -75,13 +75,93 @@ public class Database {
 
     public List<Woman> filterByMaritalStatus(String field) {
         List<Woman> womenList = women.values().stream()
-                .filter(w -> w.getMaritalStatus().equals(field)).toList();
+                .filter(w -> w.getMaritalStatus().equalsIgnoreCase(field)).toList();
         if (womenList.isEmpty()) {
             throw new InvalidMaritalStatusException("No Marital status with the name '"
                     + field + "'");
         }
 
         return womenList;
+    }
+
+
+    public List<Woman> filterByName(String field) {
+        List<Woman> womenList = women.values().stream()
+                .filter(w -> w.getName().contains(field)).toList();
+        if (womenList.isEmpty()) {
+            throw new InvalidNameException("No woman with the name '"
+                    + field + "'");
+        }
+        return womenList;
+    }
+
+    public ArrayList<Report> makeStatisticReport(){
+
+        // general statistics
+        int totalWomen = women.size();
+        int totalWomenAge = women.values().stream()
+                .map(n->n.getAge())
+                .reduce(0, (age1, age2)-> age1 + age2);
+        long unEmployed = women.values().stream()
+                .filter(w-> !w.getIsEmployed())
+                .count();
+        long employed = women.values().stream()
+                .filter(Woman::getIsEmployed)
+                .count();
+
+        long singleWomen = women.values().stream()
+                .filter(w->w.getMaritalStatus().equalsIgnoreCase("Single"))
+                .count();
+        long marriedWomen = women.values().stream()
+                .filter(w->w.getMaritalStatus().equalsIgnoreCase("Married"))
+                .count();
+        long widowedWomen = women.values().stream()
+                .filter(w->w.getMaritalStatus().equalsIgnoreCase("Widowed"))
+                .count();
+        long divorcedWomen = women.values().stream()
+                .filter(w->w.getMaritalStatus().equalsIgnoreCase("Divorced"))
+                .count();
+
+
+        //specific report
+        ArrayList<Report> list = new ArrayList<>();
+        Report single = specifiReport(singleWomen, "Single");
+        Report married = specifiReport(marriedWomen, "Married");
+        Report divorced = specifiReport(divorcedWomen, "Divorced");
+        Report widowed = specifiReport(widowedWomen, "Widowed");
+
+        list.add(single);
+        list.add(married);
+        list.add(divorced);
+        list.add(widowed);
+        
+        return list;
+
+    }
+
+    public Report specifiReport(long number, String maritalStatus){
+        // single statistics
+        long employed = women.values().stream()
+                .filter(w->
+                        w.getMaritalStatus().equalsIgnoreCase(maritalStatus)
+                                && w.getIsEmployed())
+                .count();
+        long unEmployed = women.values().stream()
+                .filter(w->
+                        w.getMaritalStatus().equalsIgnoreCase(maritalStatus)
+                                && !w.getIsEmployed())
+                .count();
+        long under_30 = women.values().stream()
+                .filter(w->
+                        w.getMaritalStatus().equalsIgnoreCase(maritalStatus)
+                                && w.getAge() < 30)
+                .count();
+        long above_30 = women.values().stream()
+                .filter(w->
+                        w.getMaritalStatus().equalsIgnoreCase(maritalStatus)
+                                && w.getAge() >= 30)
+                .count();
+        return new Report(maritalStatus, number, employed, unEmployed, under_30, above_30);
     }
 
 }
