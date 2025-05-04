@@ -24,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -104,12 +105,33 @@ public class Controller {
     @FXML
     private TableColumn<Woman, String> spouseDeathDateColumn;
 
+
+    // report table fields
+    @FXML
+    private TableView<Report> reportTable;
+    @FXML
+    private TableColumn<Report, String> reportMaritalColumn;
+    @FXML
+    private TableColumn<Report, Long> reportNumberColumn;
+    @FXML
+    private TableColumn<Report, Long> reportEmployedColumn;
+    @FXML
+    private TableColumn<Report, Long> reportUnEmployedColumn;
+    @FXML
+    private TableColumn<Report, Long> reportUnder30Column;
+    @FXML
+    private TableColumn<Report, Long> reportAbove30Column;
+
+
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     // db initialization
     private final Database db = new Database();
     private final ObservableList<Woman> womenList = FXCollections
             .observableArrayList(db.getAllWomen());
+
+    private final ObservableList<Report> reportList = FXCollections
+            .observableArrayList(db.makeStatisticReport());
 
     private String womenProcessedData = ""; // hold processed data from text or file
 
@@ -219,6 +241,16 @@ public class Controller {
         });
 
         womanTable.setItems(womenList); // refresh table for new record
+
+        // initialize field on Report table
+        reportMaritalColumn.setCellValueFactory(new PropertyValueFactory<>("maritalStatus"));
+        reportEmployedColumn.setCellValueFactory(new PropertyValueFactory<>("employed"));
+        reportUnEmployedColumn.setCellValueFactory(new PropertyValueFactory<>("unEmployed"));
+        reportNumberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
+        reportAbove30Column.setCellValueFactory(new PropertyValueFactory<>("above_30"));
+        reportUnder30Column.setCellValueFactory(new PropertyValueFactory<>("under_30"));
+
+        reportTable.setItems(reportList); // refresh table for new record
 
         // handle field visibility
         maritalStatusComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -650,7 +682,7 @@ public class Controller {
 
                 db.addWoman(woman.getWomanId(), woman);
 
-                womenList.setAll(db.getAllWomen());
+                womenList.setAll(db.getAllWomen()); // refresh table
             }
         }
         catch (NotEmptyDateDivorcedException | NotEmptyDateMarriedException | NotEmptyMaritalStatusException |

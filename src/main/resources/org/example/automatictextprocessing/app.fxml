@@ -175,11 +175,17 @@
                    style="-fx-font-size: 15px; -fx-font-weight: bold;"
             />
 
-            <ScrollPane prefHeight="200" xmlns="http://javafx.com/javafx"
-                        xmlns:fx="http://javafx.com/fxml" pannable="true"
-            >
-                <Label fx:id="regxResul" visible="false" managed="false" wrapText="true" style="-fx-padding: 5 10;"/>
-            </ScrollPane>
+            <!-- TableView -->
+            <TableView fx:id="reportTable" prefHeight="150">
+                <columns>
+                    <TableColumn fx:id="reportMaritalColumn"  text="Here" prefWidth="100" style="-fx-text-align: center" />
+                    <TableColumn fx:id="reportNumberColumn" text="Number" style="-fx-text-align: center"/>
+                    <TableColumn fx:id="reportEmployedColumn" text="Employed" style="-fx-text-align: center"/>
+                    <TableColumn fx:id="reportUnEmployedColumn" text="UnEmployed"/>
+                    <TableColumn fx:id="reportUnder30Column" text="Under 30"/>
+                    <TableColumn fx:id="reportAbove30Column" text="Above 30" />
+                </columns>
+            </TableView>
 
         </VBox>
        </HBox>
