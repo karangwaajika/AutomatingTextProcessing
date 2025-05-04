@@ -33,6 +33,7 @@
                        style="-fx-font-size: 12px; -fx-font-weight: normal;"
                 />
                 <VBox spacing="10">
+                    <TextField fx:id="nationalIdField" promptText="ID"/>
                     <TextField fx:id="nameField" promptText="Name"/>
                     <TextField fx:id="ageField" promptText="Age"/>
                     <HBox spacing="10">
@@ -116,7 +117,7 @@
                             >
                     <Label fx:id="regxResults" visible="false" managed="false" wrapText="true" style="-fx-padding: 5 10;"/>
                 </ScrollPane>
-                <Button text="Add to Database" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button text="Add to Database" onAction="#insertCleanedDataToDB"  HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
             </VBox>
         </HBox>
         <Separator prefWidth="1"/>
@@ -124,6 +125,8 @@
             <!-- TableView -->
             <TableView fx:id="womanTable" prefHeight="200" prefWidth="735">
                 <columns>
+                    <TableColumn fx:id="idColumn" text="No" style="-fx-text-align: center" prefWidth="20.0" />
+                    <TableColumn fx:id="nationalIdColumn" text="Name" prefWidth="120.0" style="-fx-text-align: center"/>
                     <TableColumn fx:id="nameColumn" text="Name" prefWidth="100.0" style="-fx-text-align: center"/>
                     <TableColumn fx:id="ageColumn" text="Age"/>
                     <TableColumn fx:id="employedColumn" text="Employed"/>

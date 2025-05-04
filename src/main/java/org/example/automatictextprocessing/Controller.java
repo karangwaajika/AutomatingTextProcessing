@@ -13,8 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 
 import javafx.scene.control.DatePicker;
@@ -76,6 +75,8 @@ public class Controller {
     @FXML
     private TableColumn<Woman, String> nameColumn;
     @FXML
+    private TableColumn<Woman, String> idColumn;
+    @FXML
     private TableColumn<Woman, String> nationalIdColumn;
     @FXML
     private TableColumn<Woman, Integer> ageColumn;
@@ -98,6 +99,8 @@ public class Controller {
     private final Database db = new Database();
     private final ObservableList<Woman> womenList = FXCollections
             .observableArrayList(db.getAllWomen());
+
+    private String womenProcessedData = ""; // hold processed data from text or file
 
     @FXML
     private void handleSubmit() {
@@ -166,6 +169,8 @@ public class Controller {
     public void initialize() {
         // initialize field on table
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("womanId"));
+        nationalIdColumn.setCellValueFactory(new PropertyValueFactory<>("nationalId"));
         ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
         employedColumn.setCellValueFactory(new PropertyValueFactory<>("isEmployed"));
         maritalStatusColumn.setCellValueFactory(new PropertyValueFactory<>("maritalStatus"));
@@ -460,6 +465,10 @@ public class Controller {
                 regxResults.setText(fileProcessor.cleanTextData(textArea.getText(), separatorField.getText()));
                 regxResults.setVisible(true);
                 regxResults.setManaged(true);
+            }else{
+                regxResults.setText(fileProcessor.cleanFileData(fileField.getText(), separatorField.getText()));
+                regxResults.setVisible(true);
+                regxResults.setManaged(true);
             }
         } catch (NotEmptyDateDivorcedException | NotEmptyDateMarriedException | NotEmptyMaritalStatusException |
                  NotEmptyNameException | NotEmptySpouseDeathDateException | UnderAgeException | IOException |
@@ -470,5 +479,48 @@ public class Controller {
                     "⚠️ Error: " + e.getMessage());
         }
 
+    }
+
+    public void insertCleanedDataToDB(ActionEvent actionEvent) throws IOException{
+        BufferedReader reader = null;
+        System.out.println(fileField.getText());
+        if(dataTypeComboBox.getValue().equals("Text")){
+            reader = new BufferedReader(new StringReader(textArea.getText()));
+        }else{
+            reader = new BufferedReader(new FileReader(fileField.getText()));
+        }
+        String line;
+        while((line = reader.readLine()) != null){
+            // extract field for insertion
+            String[] womanData = line.split(separatorField.getText());
+            String nationalId = womanData[0].trim();
+            String name = womanData[1].trim();
+            int age = Integer.parseInt(womanData[2].trim());
+            String maritalStatus = womanData[3].trim();
+            boolean isEmployed = Boolean.parseBoolean(womanData[4].trim().toLowerCase());
+            String lastField = womanData[5].trim();
+            boolean isInRelationship = false;
+            String marriedDate = "";
+            String divorcedDate = "";
+            String spouseDeathDate = "";
+            if(maritalStatus.equalsIgnoreCase("Single")){
+                isInRelationship = Boolean.parseBoolean(lastField);
+            } else if (maritalStatus.equalsIgnoreCase("Married")) {
+                marriedDate = lastField;
+            }else if(maritalStatus.equalsIgnoreCase("Divorced")){
+                divorcedDate = lastField;
+            }else{
+                spouseDeathDate = lastField;
+            }
+            System.out.println("one1");
+            Woman woman = createWoman(nationalId, maritalStatus, name, age, isEmployed,
+                    isInRelationship, marriedDate, divorcedDate, spouseDeathDate);
+            db.addWoman(woman.getWomanId(), woman);
+            womenList.setAll(db.getAllWomen());
+        }
+        reader.close();
+        textArea.setText("");
+        regxResults.setText("");
+        separatorField.setText("");
     }
 }
