@@ -67,13 +67,39 @@
                 </VBox>
             </VBox>
             <Separator orientation="VERTICAL" prefWidth="1"/>
-            <VBox alignment="TOP_CENTER">
+            <VBox alignment="TOP_CENTER" spacing="5">
                 <Label text="Add data using input text or file"
                        style="-fx-font-size: 16px; -fx-font-weight: bold;"
                 />
                 <Label text="This is the form to help us gather some of the information from you"
                        style="-fx-font-size: 12px; -fx-font-weight: normal;"
                 />
+                <ComboBox fx:id="dataTypeComboBox" promptText="Gather data from">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Text"/>
+                            <String fx:value="File"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <HBox spacing="10">
+                    <Button onAction="#showCleanContent" text="Cleaning" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button onAction="#showReplaceContent" text="Replace" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button onAction="#showSearchContent" text="Search" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+                <HBox spacing="10">
+                    <TextField fx:id="regexField" visible="false" managed="false" promptText="Regx" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <TextField fx:id="separatorField" visible="false" managed="false" promptText="Separator" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <TextField fx:id="replaceByField" visible="false" managed="false" promptText="Replace by" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+                <HBox fx:id="fileContents" spacing="5" visible="false" managed="false" >
+                    <TextField fx:id="fileField" disable="true" promptText="Not file chosen..." HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="Chose file..." onAction="#handleBrowseFile" prefWidth="100"/>
+                </HBox>
+                <TextArea fx:id="textArea" visible="false" managed="false" prefWidth="300" prefHeight="100" promptText="Enter your text here..." />
+                <Button fx:id="cleaningButtonSubmit" text="Clean Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button fx:id="replaceButtonSubmit" text="Replace Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button fx:id="searchButtonSubmit" text="Search Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
             </VBox>
             <Separator orientation="VERTICAL" prefWidth="1"/>
 

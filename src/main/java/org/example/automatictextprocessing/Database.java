@@ -17,7 +17,7 @@ public class Database {
                 .filter(w -> w.getNationalId() == woman.getNationalId())
                 .count();
         if (countWomen > 0) {
-            throw new WomanExistException("Woman ID provided exists already: "
+            throw new WomanExistException("Woman ID provided of " + woman.name + " exists already: "
                     + woman.getNationalId());
         }
 
@@ -50,7 +50,7 @@ public class Database {
         if (woman.name.isEmpty()) {
             throw new NotEmptyNameException("Name cannot be empty !!!");
         }
-        if (!(woman.name.matches("[a-zA-Z ]"))) {
+        if (!(woman.name.matches("^[a-zA-Z\\s]+$"))) {
             throw new InvalidNameException("Name is invalid !!!");
         }
 

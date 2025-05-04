@@ -3,11 +3,17 @@ package org.example.automatictextprocessing;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.File;
 import java.time.LocalDate;
 
 import javafx.scene.control.DatePicker;
@@ -28,6 +34,28 @@ public class Controller {
     public DatePicker spouseDateField;
     @FXML
     public DatePicker divorcedDateField;
+    @FXML
+    public ComboBox dataTypeComboBox;
+    @FXML
+    public TextField regexField;
+    @FXML
+    public TextField separatorField;
+    @FXML
+    public TextArea textArea;
+    @FXML
+    public Button cleanButton;
+    @FXML
+    public Button cleaningButtonSubmit;
+    @FXML
+    public Button replaceButtonSubmit;
+    @FXML
+    public Button searchButtonSubmit;
+    @FXML
+    public TextField replaceByField;
+    @FXML
+    public TextField fileField;
+    @FXML
+    public HBox fileContents;
     @FXML
     private TextField nameField;
     @FXML
@@ -72,6 +100,9 @@ public class Controller {
     private void handleSubmit() {
         try {
             String name = nameField.getText();
+            if (!(name.matches("^[a-zA-Z\\s]+$"))) {
+                throw new InvalidNameException("Name is invalid");
+            }
             String maritalStatus = maritalStatusComboBox.getValue();
             if (!(Pattern.matches("\\d+", ageField.getText()))) {
                 throw new InvalidAgeException("Age is invalid");
@@ -277,5 +308,64 @@ public class Controller {
             default -> new Widowed(nationalId, Woman.womanNbr, name, age,
                     maritalStatus, isEmployed, spouseDeathDate);
         };
+    }
+
+    public void showCleanContent(ActionEvent actionEvent) {
+        // enable common fields
+        separatorField.setVisible(true);
+        separatorField.setManaged(true);
+
+        cleaningButtonSubmit.setVisible(true);
+        cleaningButtonSubmit.setManaged(true);
+
+        // disable other buttons' contents
+        replaceByField.setVisible(false);
+        replaceByField.setManaged(false);
+
+        replaceButtonSubmit.setVisible(false);
+        replaceButtonSubmit.setManaged(false);
+
+        searchButtonSubmit.setVisible(false);
+        searchButtonSubmit.setManaged(false);
+
+        if (dataTypeComboBox.getValue().equals("Text")) {
+
+            textArea.setVisible(true);
+            textArea.setManaged(true);
+
+            //disable file contents
+            fileContents.setVisible(false);
+            fileContents.setManaged(false);
+
+        }else{
+
+            fileContents.setVisible(true);
+            fileContents.setManaged(true);
+
+            // disable text contents
+            textArea.setVisible(false);
+            textArea.setManaged(false);
+
+        }
+    }
+
+    public void showReplaceContent(ActionEvent actionEvent) {
+    }
+
+    public void showSearchContent(ActionEvent actionEvent) {
+    }
+
+    public void handleBrowseFile(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select File");
+
+        // Get the window from the event
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+        if (selectedFile != null) {
+            fileField.setText(selectedFile.getAbsolutePath());
+        }
     }
 }
