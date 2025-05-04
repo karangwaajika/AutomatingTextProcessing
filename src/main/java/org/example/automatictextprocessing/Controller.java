@@ -483,16 +483,21 @@ public class Controller {
 
     public void insertCleanedDataToDB(ActionEvent actionEvent) throws IOException{
         BufferedReader reader = null;
-        System.out.println(fileField.getText());
-        if(dataTypeComboBox.getValue().equals("Text")){
-            reader = new BufferedReader(new StringReader(textArea.getText()));
+        if(separatorField.getText().isEmpty()){
+            reader = new BufferedReader(new StringReader(regxResults.getText()));
         }else{
-            reader = new BufferedReader(new FileReader(fileField.getText()));
+            if(dataTypeComboBox.getValue().equals("Text")){
+                reader = new BufferedReader(new StringReader(textArea.getText()));
+            }else{
+                reader = new BufferedReader(new FileReader(fileField.getText()));
+            }
         }
+
         String line;
-        while((line = reader.readLine()) != null){
+        try {
+        while((line = reader.readLine()) != null) {
             // extract field for insertion
-            String[] womanData = line.split(separatorField.getText());
+            String[] womanData = line.split(separatorField.getText().isEmpty() ? "\\|" : separatorField.getText());
             String nationalId = womanData[0].trim();
             String name = womanData[1].trim();
             int age = Integer.parseInt(womanData[2].trim());
@@ -503,24 +508,55 @@ public class Controller {
             String marriedDate = "";
             String divorcedDate = "";
             String spouseDeathDate = "";
-            if(maritalStatus.equalsIgnoreCase("Single")){
+            if (maritalStatus.equalsIgnoreCase("Single")) {
                 isInRelationship = Boolean.parseBoolean(lastField);
             } else if (maritalStatus.equalsIgnoreCase("Married")) {
                 marriedDate = lastField;
-            }else if(maritalStatus.equalsIgnoreCase("Divorced")){
+            } else if (maritalStatus.equalsIgnoreCase("Divorced")) {
                 divorcedDate = lastField;
-            }else{
+            } else {
                 spouseDeathDate = lastField;
             }
-            System.out.println("one1");
+
             Woman woman = createWoman(nationalId, maritalStatus, name, age, isEmployed,
                     isInRelationship, marriedDate, divorcedDate, spouseDeathDate);
-            db.addWoman(woman.getWomanId(), woman);
-            womenList.setAll(db.getAllWomen());
+
+                db.addWoman(woman.getWomanId(), woman);
+
+                womenList.setAll(db.getAllWomen());
+            }
+        }
+        catch (NotEmptyDateDivorcedException | NotEmptyDateMarriedException | NotEmptyMaritalStatusException |
+                NotEmptyNameException | NotEmptySpouseDeathDateException | UnderAgeException |
+                InvalidMaritalStatusException | InvalidAgeException | InvalidBooleanException |
+                InvalidNameException | InvalidDateException | InvalidWomanDataException |
+                InvalidNationaldException e) {
+            showAlert(Alert.AlertType.ERROR, "Error",
+                    "⚠️ Error: " + e.getMessage());
         }
         reader.close();
         textArea.setText("");
         regxResults.setText("");
         separatorField.setText("");
+    }
+
+    public void submitReplaceData(ActionEvent actionEvent) {
+        ProcessText textProcessor = new ProcessText();
+        try {
+            if (dataTypeComboBox.getValue().equals("Text")) {
+                regxResults.setText(textProcessor.replaceText(textArea.getText(),
+                        regexField.getText(), replaceByField.getText()));
+                regxResults.setVisible(true);
+                regxResults.setManaged(true);
+            }else{
+                regxResults.setText(textProcessor.replaceFileText(fileField.getText(),
+                        regexField.getText(), replaceByField.getText()));
+                regxResults.setVisible(true);
+                regxResults.setManaged(true);
+            }
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error",
+                    "⚠️ Error: " + e.getMessage());
+        }
     }
 }

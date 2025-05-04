@@ -1,5 +1,12 @@
 package org.example.automatictextprocessing;
 
+import org.example.automatictextprocessing.exceptions.*;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,11 +27,36 @@ public class ProcessText {
 
     }
 
-    public String replaceText(String text, String replace, String by) {
-        Pattern pat = Pattern.compile(replace);
-        Matcher mat = pat.matcher(text);
+    public String replaceText(String text, String replace, String by) throws IOException {
+        BufferedReader reader = new BufferedReader(new StringReader(text));
 
-        return mat.replaceAll(by);
+        String line;
+        String formatedData = "";
+
+        while ((line = reader.readLine()) != null) {
+            Pattern pat = Pattern.compile(replace);
+            Matcher mat = pat.matcher(line);
+            formatedData += mat.replaceAll(by)+"\n";
+        }
+        reader.close();
+
+        return formatedData;
+
+    }
+
+    public String replaceFileText(String path, String replace, String by) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        String line;
+        String formatedData = "";
+
+        while ((line = reader.readLine()) != null) {
+            Pattern pat = Pattern.compile(replace);
+            Matcher mat = pat.matcher(line);
+            formatedData += mat.replaceAll(by)+"\n";
+        }
+        reader.close();
+
+        return formatedData;
 
     }
 

@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 public class ProcessData {
     private static final Logger logger = LogManager.getLogger(ProcessData.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         /*
          * DEALING WITH PROCESSING DATA FROM A TEXT INPUT
          */
@@ -29,7 +29,7 @@ public class ProcessData {
 
         // ##### Replace a string ######
         System.out.println("##### Replace a string ######");
-        String text1 = "078 298 3266";
+        String text1 = "078 298 3266\n ajika Paul";
         System.out.println(textProcessor.replaceText(text, "\\bcat\\b", "dog"));
         System.out.println(textProcessor.replaceText(text1, "\\s", "-"));
 

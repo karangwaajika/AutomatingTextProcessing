@@ -99,7 +99,7 @@
                 </HBox>
                 <TextArea fx:id="textArea" visible="false" managed="false" prefWidth="300" prefHeight="100" promptText="Enter your text here..." />
                 <Button fx:id="cleaningButtonSubmit" onAction="#submitCleanData" text="Clean Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                <Button fx:id="replaceButtonSubmit" text="Replace Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button fx:id="replaceButtonSubmit" onAction="#submitReplaceData" text="Replace Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
                 <Button fx:id="searchButtonSubmit" text="Search Data" visible="false" managed="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
             </VBox>
             <Separator orientation="VERTICAL" prefWidth="1"/>
@@ -125,8 +125,8 @@
             <!-- TableView -->
             <TableView fx:id="womanTable" prefHeight="200" prefWidth="735">
                 <columns>
-                    <TableColumn fx:id="idColumn" text="No" style="-fx-text-align: center" prefWidth="20.0" />
-                    <TableColumn fx:id="nationalIdColumn" text="Name" prefWidth="120.0" style="-fx-text-align: center"/>
+                    <TableColumn fx:id="idColumn" text="No" style="-fx-text-align: center" prefWidth="50.0" />
+                    <TableColumn fx:id="nationalIdColumn" text="ID" prefWidth="120.0" style="-fx-text-align: center"/>
                     <TableColumn fx:id="nameColumn" text="Name" prefWidth="100.0" style="-fx-text-align: center"/>
                     <TableColumn fx:id="ageColumn" text="Age"/>
                     <TableColumn fx:id="employedColumn" text="Employed"/>
